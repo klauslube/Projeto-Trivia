@@ -1,6 +1,6 @@
 import React from "react";
 import renderWithRouterAndRedux from "./renderWithRouterAndRedux";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from '../../App'
 
@@ -20,6 +20,31 @@ const initialState = {
     email: '',
   }
 }
+
+
+const token = {
+  response_code:0,
+  response_message:"Token Generated Successfully!",
+  token:"f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6"
+}
+
+afterEach(() => jest.clearAllMocks());
+
+const apiResponse = Promise.resolve({
+  json: () => Promise.resolve(token),
+});
+
+global.fetch = jest.fn(() => apiResponse);
+
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  clear: jest.fn()
+};
+
+global.localStorage = localStorageMock;
+
+
 describe('Testa a page Login', () => {
   test('testa se o input user e email são renderizados', () => {
     renderWithRouterAndRedux(<App />, initialState);
@@ -81,14 +106,18 @@ describe('Testa a page Login', () => {
     userEvent.type(Input[1], VALID_EMAIL);
     expect(button[0]).toBeEnabled();
   })
-  test('testa se ao clicar no elemento button play o usuario é redirecionado para a página do jogo', () => {
+  test('testa se ao clicar no elemento button play o usuario é redirecionado para a página do jogo', async () => {
     const { history } = renderWithRouterAndRedux(<App />, initialState);
 
     const button = screen.getAllByRole('button');
+    const Input = screen.getAllByRole('textbox');
     userEvent.type(Input[0], VALID_USER);
     userEvent.type(Input[1], VALID_EMAIL);
     userEvent.click(button[0]);
-    expect(history.location.pathname).toBe('/jogo')
+    await waitFor(() => {
+      expect(history.location.pathname).toBe('/game')
+
+    })
      
    })
   test('testa se ao clicar no elemento button settings o usuario é redirecionado para a página de configurações', () => {
@@ -96,8 +125,32 @@ describe('Testa a page Login', () => {
 
     const button = screen.getAllByRole('button');
     userEvent.click(button[1]);
-    expect(history.location.pathname).toBe('/configurações')
+    expect(history.location.pathname).toBe('/settings')
 
   })
+  test('teste se ao clicar no button play, é feita uma requisição para a API e recebido um token', () => {
+    renderWithRouterAndRedux(<App />, initialState);
   
+    const button = screen.getAllByRole('button');
+    const Input = screen.getAllByRole('textbox');
+    userEvent.type(Input[0], VALID_USER);
+    userEvent.type(Input[1], VALID_EMAIL);
+    userEvent.click(button[0]);
+
+    expect(mockedAPI).toBeCalled();
+    expect(mockedAPI).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
+    expect(mockedApI).toHaveReturnedWith(token);
+
+  })
+  test('teste se é o token recebido da API é salvo no localStorage', () => {
+    renderWithRouterAndRedux(<App />, initialState);
+
+    const button = screen.getAllByRole('button');
+    const Input = screen.getAllByRole('textbox');
+    userEvent.type(Input[0], VALID_USER);
+    userEvent.type(Input[1], VALID_EMAIL);
+    userEvent.click(button[0]);
+
+    expect(localStorageMock.getItem).toHaveBeenCalledWith(token)
+  })
 })
