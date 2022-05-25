@@ -68,7 +68,6 @@ class Login extends Component {
           <CreateButton
             placeholder="Play"
             testID="btn-play"
-            onClick={ () => {} }
             isDisable={ isDisable }
             onClick={ this.getToken }
           />
