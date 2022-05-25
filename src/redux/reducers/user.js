@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
   name: '',
   email: '',
+  score: 0,
 
 };
 
