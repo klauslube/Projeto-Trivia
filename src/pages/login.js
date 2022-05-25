@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import CreateInput from '../components/CreateInput';
 import CreateButton from '../components/CreateButton';
+import { addToken } from '../services/localStore';
 
 class Login extends Component {
   state = {
@@ -24,6 +26,18 @@ class Login extends Component {
 
       this.setState({ isDisable: !disabled });
     });
+  }
+
+  getToken = async () => {
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const { history } = this.props;
+    try {
+      const dados = await response.json();
+      addToken(dados.token);
+      history.push('/jogos');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
@@ -56,6 +70,7 @@ class Login extends Component {
             testID="btn-play"
             onClick={ () => {} }
             isDisable={ isDisable }
+            onClick={ this.getToken }
           />
 
         </form>
@@ -64,5 +79,9 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.objectOf,
+}.isRequired;
 
 export default Login;
