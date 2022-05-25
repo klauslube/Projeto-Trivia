@@ -2,9 +2,17 @@ import { getToken, getQuestions } from '../../services/api';
 
 // ACTION TYPES
 const TOKEN_ACTION = 'TOKEN_ACTION';
+const PICTURE_ACTION = 'PICTURE_ACTION';
+const SET_PLAYER = 'SET_PLAYER';
+const QUESTIONS_ACTION = 'QUESTIONS_ACTION';
+const SCORE_ACTION = 'SCORE_ACTION';
 
 export const actionTypes = {
   TOKEN_ACTION,
+  PICTURE_ACTION,
+  SET_PLAYER,
+  QUESTIONS_ACTION,
+  SCORE_ACTION,
 };
 
 // ACTIONS CREATORS
@@ -14,14 +22,24 @@ const setToken = (token) => ({
   token,
 });
 
-const setPlayer = (player) => ({
-  type: 'SET_PLAYER',
-  player,
+const setPlayer = (playerInfo) => ({
+  type: SET_PLAYER,
+  playerInfo,
 });
 
 const setQuestions = (questions) => ({
-  type: 'SET_QUESTIONS',
+  type: QUESTIONS_ACTION,
   questions,
+});
+
+const setScore = (score) => ({
+  type: SCORE_ACTION,
+  score,
+});
+
+const pictureAction = (picture) => ({
+  type: PICTURE_ACTION,
+  picture,
 });
 
 const getTokenThunk = () => async (dispatch) => {
@@ -29,6 +47,7 @@ const getTokenThunk = () => async (dispatch) => {
   localStorage.setItem('token', result.token);
   dispatch(setToken(result.token));
 };
+
 const getQuestionsThunk = () => async (dispatch, getState) => {
   const { token } = getState();
   const result = await getQuestions(token);
@@ -45,8 +64,10 @@ const getQuestionsThunk = () => async (dispatch, getState) => {
 
 export const actionCreators = {
   setToken,
-  setPlayer,
-  setQuestions,
   getTokenThunk,
+  setQuestions,
+  setPlayer,
+  setScore,
+  pictureAction,
   getQuestionsThunk,
 };
