@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import logo from './trivia.png';
-import Login from './pages/login';
+import Login from './pages/Login';
 import Settings from './pages/Settings';
 
 export default function App() {

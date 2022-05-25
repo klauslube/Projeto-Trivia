@@ -18,9 +18,8 @@ class Login extends Component {
 
     this.setState({ [name]: value }, () => {
       const { userEmail, userName } = this.state;
-      const fieldCheck = [userEmail, userName];
 
-      const lengthCheck = fieldCheck.every((field) => field.length >= minLength);
+      const lengthCheck = userEmail.length >= minLength && userName.length > 0;
       const emailCheck = includeCheck.every((toHave) => userEmail.includes(toHave));
       const disabled = lengthCheck && emailCheck;
 
