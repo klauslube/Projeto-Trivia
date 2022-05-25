@@ -137,12 +137,12 @@ describe('Testa a page Login', () => {
     userEvent.type(Input[1], VALID_EMAIL);
     userEvent.click(button[0]);
 
-    expect(mockedAPI).toBeCalled();
-    expect(mockedAPI).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
-    expect(mockedApI).toHaveReturnedWith(token);
+    expect(global.fetch).toBeCalled();
+    expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
+    expect(global.fetch).toHaveReturnedWith(token);
 
   })
-  test('teste se é o token recebido da API é salvo no localStorage', () => {
+  test('teste se o token recebido da API é salvo no localStorage', () => {
     renderWithRouterAndRedux(<App />, initialState);
 
     const button = screen.getAllByRole('button');
