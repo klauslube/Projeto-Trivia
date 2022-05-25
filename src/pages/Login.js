@@ -67,7 +67,6 @@ class Login extends Component {
 
     return (
       <div>
-        <Link to="/settings" data-testid="btn-settings">Settings</Link>
 
         <h1>Login</h1>
         <form>
@@ -95,7 +94,9 @@ class Login extends Component {
           />
 
         </form>
-
+        <Link to="/settings" data-testid="btn-settings">
+          <button type="button">Settings</button>
+        </Link>
       </div>
     );
   }
