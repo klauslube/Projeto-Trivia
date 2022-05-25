@@ -5,9 +5,6 @@ import userEvent from "@testing-library/user-event";
 import App from '../../App'
 
 import {
-  EMAIL_INPUT_TEST_ID,
-  USER_INPUT_TEST_ID, 
-  PLAY_BTN_TEST_ID,
   VALID_USER, 
   INVALID_USER,
   VALID_EMAIL, 
@@ -30,12 +27,6 @@ describe('Testa a page Login', () => {
     const Input =  screen.getAllByRole('textbox');
     expect(Input[0] && Input[1]).toBeInTheDocument();
   })
-  // test('testa se o input user e email estão vazios ao renderizar', () => {
-  //   renderWithRouterAndRedux(<App />, initialState);
-
-  //   const Input = screen.getAllByRole('textbox');
-  //   expect(Input[0] && Input[1]).toHaveValue('');
-  // })
   test('testa se existe um elemento button na página',() => {
     renderWithRouterAndRedux(<App />, initialState);
 
