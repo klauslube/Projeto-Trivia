@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import CreateInput from '../components/CreateInput';
 import CreateButton from '../components/CreateButton';
+import { addToken } from '../services/localStore';
 
 class Login extends Component {
   state = {
@@ -15,9 +18,8 @@ class Login extends Component {
 
     this.setState({ [name]: value }, () => {
       const { userEmail, userName } = this.state;
-      const fieldCheck = [userEmail, userName];
 
-      const lengthCheck = fieldCheck.every((field) => field.length >= minLength);
+      const lengthCheck = userEmail.length >= minLength && userName.length > 0;
       const emailCheck = includeCheck.every((toHave) => userEmail.includes(toHave));
       const disabled = lengthCheck && emailCheck;
 
@@ -25,11 +27,25 @@ class Login extends Component {
     });
   }
 
+  getToken = async () => {
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const { history } = this.props;
+    try {
+      const dados = await response.json();
+      addToken(dados.token);
+      history.push('/jogos');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   render() {
     const { userName, userEmail, isDisable } = this.state;
 
     return (
       <div>
+        <Link to="/settings" data-testid="btn-settings">Settings</Link>
+
         <h1>Login</h1>
         <form>
           <CreateInput
@@ -51,8 +67,8 @@ class Login extends Component {
           <CreateButton
             placeholder="Play"
             testID="btn-play"
-            handleInput={ () => {} }
             isDisable={ isDisable }
+            onClick={ this.getToken }
           />
 
         </form>
@@ -61,5 +77,9 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.objectOf,
+}.isRequired;
 
 export default Login;
