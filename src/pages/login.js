@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CreateInput from '../components/CreateInput';
 import CreateButton from '../components/CreateButton';
@@ -44,6 +45,8 @@ class Login extends Component {
 
     return (
       <div>
+        <Link to="/settings" data-testid="btn-settings">Settings</Link>
+
         <h1>Login</h1>
         <form>
           <CreateInput
@@ -65,7 +68,7 @@ class Login extends Component {
           <CreateButton
             placeholder="Play"
             testID="btn-play"
-            handleInput={ () => {} }
+            onClick={ () => {} }
             isDisable={ isDisable }
             onClick={ this.getToken }
           />
