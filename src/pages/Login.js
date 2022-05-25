@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CreateInput from '../components/CreateInput';
 import CreateButton from '../components/CreateButton';
-import { addToken } from '../services/localStore';
+// import { addToken } from '../services/localStore';
+import { actionCreators } from '../redux/action';
 
 class Login extends Component {
   state = {
@@ -11,6 +13,17 @@ class Login extends Component {
     userEmail: '',
     isDisable: true,
   };
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    const INITIAL_STATE = {
+      userName: '',
+      userEmail: '',
+      score: 0,
+    };
+    dispatch(actionCreators.setPlayer(INITIAL_STATE));
+  }
 
   handleChange = ({ target: { value, name } }) => {
     const minLength = 6;
@@ -27,7 +40,7 @@ class Login extends Component {
     });
   }
 
-  getToken = async () => {
+  /* getToken = async () => {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const { history } = this.props;
     try {
@@ -37,6 +50,16 @@ class Login extends Component {
     } catch (error) {
       console.log(error);
     }
+  } */
+
+  handlePlayClick = async () => {
+    const { history, dispatch } = this.props;
+    const { userName, userEmail } = this.state;
+    await dispatch(actionCreators.getTokenThunk());
+    dispatch(actionCreators.setPlayer({
+      userName, userEmail,
+    }));
+    history.push('/game');
   }
 
   render() {
@@ -68,7 +91,7 @@ class Login extends Component {
             placeholder="Play"
             testID="btn-play"
             isDisable={ isDisable }
-            onClick={ this.getToken }
+            onClick={ this.handlePlayClick }
           />
 
         </form>
@@ -78,8 +101,17 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  history: PropTypes.objectOf,
-}.isRequired;
+/* const mapStateToProps = (state) => ({
+  token: state.token,
+}); */
 
-export default Login;
+// const mapDispatchToProps = (dispatch) => ({});
+
+export default connect()(Login);
+
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
