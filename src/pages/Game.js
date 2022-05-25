@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import propTypes from 'prop-types';
+// import { connect } from 'react-redux';
+// import propTypes from 'prop-types';
 
 class Game extends Component {
   render() {
