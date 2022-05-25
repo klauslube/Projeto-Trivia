@@ -29,10 +29,24 @@ const getTokenThunk = () => async (dispatch) => {
   localStorage.setItem('token', result.token);
   dispatch(setToken(result.token));
 };
+const getQuestionsThunk = () => async (dispatch, getState) => {
+  const { token } = getState();
+  const result = await getQuestions(token);
+  const ERROR = 3;
+  if (result.response_code === ERROR) {
+    await dispatch(getTokenThunk());
+    const { token: newToken } = getState();
+    const questions = await getQuestions(newToken);
+    dispatch(setQuestions(questions.results));
+  } else {
+    dispatch(setQuestions(result.results));
+  }
+};
 
 export const actionCreators = {
   setToken,
   setPlayer,
   setQuestions,
   getTokenThunk,
+  getQuestionsThunk,
 };
