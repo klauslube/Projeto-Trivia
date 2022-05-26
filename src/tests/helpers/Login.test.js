@@ -22,7 +22,7 @@ const initialState = {
 }
 
 
-const token = {
+const tokenData = {
   response_code:0,
   response_message:"Token Generated Successfully!",
   token:"f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6"
@@ -31,7 +31,7 @@ const token = {
 afterEach(() => jest.clearAllMocks());
 
 const apiResponse = Promise.resolve({
-  json: () => Promise.resolve(token),
+  json: () => Promise.resolve(tokenData),
 });
 
 global.fetch = jest.fn(() => apiResponse);
@@ -124,10 +124,7 @@ describe('Testa a page Login', () => {
     userEvent.type(Input[0], VALID_USER);
     userEvent.type(Input[1], VALID_EMAIL);
     userEvent.click(button[0]);
-    await waitFor(() => {
-      expect(history.location.pathname).toBe('/game')
-      
-    })
+    async () => await expect(history.location.pathname).toBe('/game');
      
    })
   test('testa se ao clicar no elemento button settings o usuario é redirecionado para a página de configurações', () => {

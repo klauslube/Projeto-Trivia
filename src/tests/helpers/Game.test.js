@@ -1,8 +1,14 @@
 import React from "react";
 import renderWithRouterAndRedux from "./renderWithRouterAndRedux";
-import { getByAltText, getByRole, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from '../../App'
+
+const tokenData = {
+  response_code:0,
+  response_message:"Token Generated Successfully!",
+  token:"f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6"
+}
 
 const initialStateHeader = {
   player: {
@@ -12,13 +18,21 @@ const initialStateHeader = {
   }
 }
 
-// afterEach(() => jest.clearAllMocks());
+afterEach(() => jest.clearAllMocks());
 
-// const apiResponse = Promise.resolve({
-//   json: () => Promise.resolve(token),
-// });
+const apiResponse = Promise.resolve({
+  json: () => Promise.resolve(tokenData),
+});
 
 // global.fetch = jest.fn(() => apiResponse);
+
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  clear: jest.fn()
+};
+
+global.localStorage = localStorageMock;
 
 
 describe('Testa a Game page e suas funcionalidades', () => {
@@ -37,8 +51,45 @@ describe('Testa a Game page e suas funcionalidades', () => {
     const playerScore = screen.getByTestId('header-score');
     expect(playerScore).toBeInTheDocument();
     // expect(playerScore).toHaveValue(0); // descobrir porque nao funciona
+    expect(playerScore).toContainHTML(0); // alternativa 
   })
-  // test('testa se é feito a requisição para a API de perguntas',() => {
+  test('testa se existe um token valido no local storage', () => {
+    renderWithRouterAndRedux(<App /> , initialStateHeader, '/game')
 
-  // })
+    expect(localStorageMock.getItem).toHaveBeenCalled();
+    expect(localStorageMock.getItem).toHaveBeenCalledWith(tokenData.token)
+
+
+  })
+  test('testa se o usuario é redirecionado para a page de login caso esteja com um token invalido, e se esse token é deletado', () => {
+    
+  })
+  test('testa se é feito a requisição para a API de perguntas',() => {
+    renderWithRouterAndRedux(<App /> , initialStateHeader, '/game')
+
+    // expect(localStorageMock.getItem).toHaveBeenCalled();
+    // expect(localStorageMock.getItem).toHaveBeenCalledWith(token.token)
+
+  })
+  test('testa se é exibido a categoria, texto e alternativas da pergunta',() => {
+
+  })
+  test('testa se apenas uma pergunta é exibida por vez', () => {
+
+  })
+  test('testa se existe apenas um elemento com resposta certa', () => {
+
+  })
+  test('testa se as alternativas são exibidas em ordem aleatória', () => {
+
+  })
+  test('testa se a alternativa correta fica com a cor verde ao acertar a questão, e as erradas com cor vermelha',() => {
+
+  })
+  test('testa se as alternativas erradas tem cor vermelha ao errar a questão, e a certa com cor verde', () => {
+
+  })
+  test('testa o temporizador das perguntas', () => {
+
+  })
 })
