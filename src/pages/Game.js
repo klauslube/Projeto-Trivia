@@ -20,8 +20,14 @@ class GameScreen extends Component {
   }
 
   async componentDidMount() {
-    const { getQuestions } = this.props;
+    const { getQuestions, history } = this.props;
     await getQuestions();
+    const { invalidToken } = this.props;
+    console.log(invalidToken);
+    if (invalidToken === true) {
+      history.push('/');
+      localStorage.removeItem('token');
+    }
     this.setState({
       isLoading: false,
     });
@@ -177,6 +183,7 @@ const mapStateToProps = (state) => ({
   token: state.token,
   game: state.game,
   player: state.player,
+  invalidToken: state.game.invalidToken,
 });
 
 const mapDispatchToProps = (dispatch) => ({
