@@ -6,11 +6,8 @@ const INITIAL_STATE = {
 
 const gameReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case actionTypes.SET_QUESTIONS:
-    return {
-      ...state,
-      questions: action.questions,
-    };
+  case actionTypes.QUESTIONS_ACTION:
+    return { questions: action.questions };
   default:
     return state;
   }
