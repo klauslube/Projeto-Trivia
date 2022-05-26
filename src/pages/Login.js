@@ -8,18 +8,21 @@ import CreateButton from '../components/CreateButton';
 import { actionCreators } from '../redux/action';
 
 class Login extends Component {
-  state = {
-    userName: '',
-    userEmail: '',
-    isDisable: true,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      userName: '',
+      userEmail: '',
+    };
+  }
 
   componentDidMount() {
     const { dispatch } = this.props;
 
     const INITIAL_STATE = {
-      userName: '',
-      userEmail: '',
+      name: '',
+      gravatarEmail: '',
       score: 0,
     };
     dispatch(actionCreators.setPlayer(INITIAL_STATE));
@@ -57,7 +60,8 @@ class Login extends Component {
     const { userName, userEmail } = this.state;
     await dispatch(actionCreators.getTokenThunk());
     dispatch(actionCreators.setPlayer({
-      userName, userEmail,
+      name: userName,
+      gravatarEmail: userEmail,
     }));
     history.push('/game');
   }
