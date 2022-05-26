@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import logo from './trivia.png';
 import Login from './pages/Login';
 import Settings from './pages/Settings';
+import Game from './pages/Game';
 
 export default function App() {
   return (
@@ -12,8 +13,9 @@ export default function App() {
         <p>SUA VEZ group 6</p>
       </header>
       <Switch>
-        <Route path="/" exact component={ Login } />
-        <Route path="/settings" component={ Settings } />
+        <Route exact path="/" component={ Login } />
+        <Route exact path="/settings" component={ Settings } />
+        <Route exact path="/game" component={ Game } />
       </Switch>
 
     </div>

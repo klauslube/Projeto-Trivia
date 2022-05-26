@@ -2,33 +2,65 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import { actionCreators } from '../redux/action';
 
 class Header extends Component {
+  componentDidMount() {
+    const { player, savePicture } = this.props;
+    const playerPicture = this.imgGravatar(player.gravatarEmail);
+    savePicture(playerPicture);
+  }
+
+  imgGravatar = (email) => {
+    const hash = md5(email).toString();
+    return `https://www.gravatar.com/avatar/${hash}`;
+  };
+
   render() {
-    const { userName, userEmail, score } = this.props;
-    const userUrl = `https://www.gravatar.com/avatar/${md5(userEmail).toString()}`;
+    const { player } = this.props;
 
     return (
       <header>
-        <img src={ userUrl } data-testid="header-profile-picture" alt="the user avater" />
-        <p data-testid="header-player-name">{ userName }</p>
-        <p data-testid="header-score">{ score }</p>
+        {/* <img src={ logo } alt="logo" /> */}
+        <div>
+          <div>
+            <img
+              src={ this.imgGravatar(player.gravatarEmail) }
+              alt="Profile-Img"
+              data-testid="header-profile-picture"
+            />
+            <p
+              data-testid="header-player-name"
+            >
+              { player.name }
+            </p>
+          </div>
+          <div>
+            <span>Pontos: </span>
+            <span data-testid="header-score">
+              { player.score }
+            </span>
+          </div>
+        </div>
       </header>
     );
   }
 }
-
-const mapStateToProps = ({ user: { player: { name, gravatarEmail,
-  score } } }) => ({
-  userName: name,
-  userEmail: gravatarEmail,
-  score,
+const mapStateToProps = (state) => ({
+  player: state.player,
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => ({
+  savePicture: (picture) => dispatch(actionCreators.pictureAction(picture)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
 Header.propTypes = {
-  userName: PropTypes.string,
-  userEmail: PropTypes.string,
-  score: PropTypes.number,
-}.isRequired;
+  player: PropTypes.shape({
+    gravatarEmail: PropTypes.string,
+    name: PropTypes.string,
+    score: PropTypes.number,
+  }).isRequired,
+  savePicture: PropTypes.func.isRequired,
+};
