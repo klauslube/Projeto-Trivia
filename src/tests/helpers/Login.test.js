@@ -21,11 +21,10 @@ const initialState = {
   }
 }
 
-
 const tokenData = {
-  response_code:0,
-  response_message:"Token Generated Successfully!",
-  token:"f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6"
+  "response_code":0,
+  "response_message":"Token Generated Successfully!",
+  "token":"f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6"
 }
 
 afterEach(() => jest.clearAllMocks());
@@ -147,7 +146,7 @@ describe('Testa a page Login', () => {
   //   await waitFor(() => {
   //     expect(global.fetch).toBeCalled();
   //     expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
-  //     expect(global.fetch).toHaveReturnedWith(token);
+  //     expect(global.fetch).toHaveReturnedWith(tokenData);
 
   //   })
 
@@ -161,6 +160,6 @@ describe('Testa a page Login', () => {
   //   userEvent.type(Input[1], VALID_EMAIL);
   //   userEvent.click(button[0]);
 
-  //   expect(localStorageMock.getItem).toHaveBeenCalledWith(token)
+  //   expect(localStorageMock.getItem).toHaveBeenCalledWith(tokenData)
   // })
 })
