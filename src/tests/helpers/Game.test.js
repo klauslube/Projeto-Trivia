@@ -6,9 +6,18 @@ import App from '../../App'
 
 const initialStateHeader = {
   player: {
-    name: 'klaus'
+    name: 'player name',
+    score: 0,
   }
 }
+
+// afterEach(() => jest.clearAllMocks());
+
+// const apiResponse = Promise.resolve({
+//   json: () => Promise.resolve(token),
+// });
+
+// global.fetch = jest.fn(() => apiResponse);
 
 
 describe('Testa a Game page e suas funcionalidades', () => {
@@ -22,14 +31,15 @@ describe('Testa a Game page e suas funcionalidades', () => {
     // expect(playerImg).toBeInTheDocument();
     // expect(playerImg).toHaveAttribute('src','https://www.gravatar.com/avatar/')
 
-    const playerName = screen.getByTestId('header-player-name')
+    const playerName = screen.getByTestId('header-player-name');
     expect(playerName).toBeInTheDocument();
 
     // const playerScore = screen.getByRole('', {name:})
-    // expect(playerScore).toBeInTheDocument();
-    // expect(playerScore).toBe(0);
+    const playerScore = screen.getByTestId('header-score');
+    expect(playerScore).toBeInTheDocument();
+    expect(playerScore).toHaveValue(0);
   })
-  test('testa se é feito a requisição para a API de perguntas',() => {
+  // test('testa se é feito a requisição para a API de perguntas',() => {
 
-  })
+  // })
 })
