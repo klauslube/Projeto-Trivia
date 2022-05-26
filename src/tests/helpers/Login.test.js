@@ -15,7 +15,7 @@ import {
 } from './constants';
 
 const initialState = {
-  user: {
+  player: {
     name: '',
     email: '',
   }
@@ -125,7 +125,7 @@ describe('Testa a page Login', () => {
     userEvent.type(Input[1], VALID_EMAIL);
     userEvent.click(button[0]);
     await waitFor(() => {
-      expect(history.location.pathname).toBe('/jogos')
+      expect(history.location.pathname).toBe('/game')
       
     })
      
