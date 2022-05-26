@@ -20,8 +20,14 @@ class GameScreen extends Component {
   }
 
   async componentDidMount() {
-    const { getQuestions } = this.props;
+    const { getQuestions, history } = this.props;
     await getQuestions();
+    const { invalidToken } = this.props;
+    console.log(invalidToken);
+    if (invalidToken === true) {
+      history.push('/');
+      localStorage.removeItem('token');
+    }
     this.setState({
       isLoading: false,
     });
@@ -127,7 +133,6 @@ class GameScreen extends Component {
     const easy = 1;
     const medium = 2;
     const hard = 3;
-
     switch (difficulty) {
     case 'medium':
       return initialMultipler + (timer * medium);
@@ -177,6 +182,7 @@ const mapStateToProps = (state) => ({
   token: state.token,
   game: state.game,
   player: state.player,
+  invalidToken: state.game.invalidToken,
 });
 
 const mapDispatchToProps = (dispatch) => ({
