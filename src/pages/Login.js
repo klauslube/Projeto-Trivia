@@ -12,6 +12,7 @@ class Login extends Component {
     super(props);
 
     this.state = {
+      isDisable: true,
       userName: '',
       userEmail: '',
     };
