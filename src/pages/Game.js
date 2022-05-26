@@ -133,7 +133,6 @@ class GameScreen extends Component {
     const easy = 1;
     const medium = 2;
     const hard = 3;
-
     switch (difficulty) {
     case 'medium':
       return initialMultipler + (timer * medium);
