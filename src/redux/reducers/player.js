@@ -1,12 +1,10 @@
 import { actionTypes } from '../action';
 
 const INITIAL_STATE = {
-  player: {
-    name: '',
-    gravatarEmail: '',
-    score: 0,
-    assertions: 0,
-  },
+  name: '',
+  gravatarEmail: '',
+  score: 0,
+  assertions: 0,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
