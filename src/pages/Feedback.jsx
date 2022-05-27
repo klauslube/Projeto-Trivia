@@ -17,7 +17,6 @@ class Feedback extends Component {
   render() {
     const { score, assertions } = this.props;
     const { feedbackText } = this.state;
-    console.log(score, assertions);
     return (
       <section>
         <h2 data-testid="feedback-text">{ feedbackText }</h2>
@@ -36,7 +35,7 @@ class Feedback extends Component {
   }
 }
 
-const mapStateToProps = ({ user: { player: { score, assertions } } }) => ({
+const mapStateToProps = ({ player: { score, assertions } }) => ({
   score,
   assertions,
 });
