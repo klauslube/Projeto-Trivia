@@ -33,7 +33,9 @@ const apiResponse = Promise.resolve({
   json: () => Promise.resolve(tokenData),
 });
 
-global.fetch = jest.fn(() => apiResponse);
+// global.fetch = jest.fn(() => apiResponse); // nao funciona
+
+jest.spyOn(global, 'fetch').mockImplementation(() => apiResponse);
 
 const localStorageMock = {
   getItem: jest.fn(),
@@ -146,7 +148,7 @@ describe('Testa a page Login', () => {
   //   await waitFor(() => {
   //     expect(global.fetch).toBeCalled();
   //     expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
-  //     expect(global.fetch).toHaveReturnedWith(tokenData);
+  //     // expect(global.fetch).toHaveReturnedWith(tokenData);
 
   //   })
 
