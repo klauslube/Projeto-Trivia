@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import CreateButton from '../components/CreateButton';
 
 class Feedback extends Component {
   render() {
-    const { score, assertions } = this.props;
+    const { score, assertions, history } = this.props;
     const assertionsComp = 3;
-    console.log('feedback assertions', assertions);
     return (
       <section>
         <Header />
@@ -15,7 +15,6 @@ class Feedback extends Component {
           {
             assertions < assertionsComp ? 'Could be better...' : 'Well Done!'
           }
-
         </h2>
 
         <h3>
@@ -27,6 +26,17 @@ class Feedback extends Component {
           { 'Você acertou: ' }
           <span data-testid="feedback-total-question">{ assertions }</span>
         </h3>
+
+        <CreateButton
+          placeholder="Play Again"
+          testID="btn-play-again"
+          onClick={ () => history.push('/') }
+        />
+        <CreateButton
+          placeholder="Ranking"
+          testID="btn-ranking"
+          onClick={ () => history.push('/ranking') }
+        />
       </section>
     );
   }
@@ -42,4 +52,6 @@ export default connect(mapStateToProps)(Feedback);
 Feedback.propTypes = {
   Assertions: PropTypes.number,
   assertions: PropTypes.number,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired }),
 }.isRequired;
