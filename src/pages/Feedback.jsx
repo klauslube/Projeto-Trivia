@@ -3,23 +3,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Feedback extends Component {
-  state = {
-    feedbackText: '',
-  }
-
-  componentDidMount() {
-    const { assertions } = this.props;
-    const Comparation = 3;
-    const feedbackText = assertions < Comparation ? 'Could be better...' : 'Well Done!';
-    this.setState({ feedbackText });
-  }
-
   render() {
     const { score, assertions } = this.props;
-    const { feedbackText } = this.state;
+    // const { feedbackText } = this.state;
+    const assertionsComp = 3;
+    console.log('feedback assertions', assertions);
     return (
       <section>
-        <h2 data-testid="feedback-text">{ feedbackText }</h2>
+        <h2 data-testid="feedback-text">
+          {
+            assertions < assertionsComp ? 'Could be better...' : 'Well Done!'
+          }
+
+        </h2>
 
         <h3>
           { 'Sua pontuação foi de: ' }

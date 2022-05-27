@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import CreateInput from '../components/CreateInput';
 import CreateButton from '../components/CreateButton';
 // import { addToken } from '../services/localStore';
-import { actionCreators } from '../redux/action';
+import { getTokenThunk, setPlayer } from '../redux/action';
 
 class Login extends Component {
   constructor(props) {
@@ -19,14 +19,14 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    // const { dispatch } = this.props;
 
-    const INITIAL_STATE = {
-      name: '',
-      gravatarEmail: '',
-      score: 0,
-    };
-    dispatch(actionCreators.setPlayer(INITIAL_STATE));
+    // const INITIAL_STATE = {
+    //   name: '',
+    //   gravatarEmail: '',
+    //   score: 0,
+    // };
+    // dispatch(actionCreators.setPlayer(INITIAL_STATE));
   }
 
   handleChange = ({ target: { value, name } }) => {
@@ -59,8 +59,8 @@ class Login extends Component {
   handlePlayClick = async () => {
     const { history, dispatch } = this.props;
     const { userName, userEmail } = this.state;
-    await dispatch(actionCreators.getTokenThunk());
-    dispatch(actionCreators.setPlayer({
+    await dispatch(getTokenThunk());
+    dispatch(setPlayer({
       name: userName,
       gravatarEmail: userEmail,
     }));

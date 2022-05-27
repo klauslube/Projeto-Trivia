@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { actionCreators } from '../redux/action';
+import { getQuestionsThunk, setScore, correctAction } from '../redux/action';
 import QuestionCard from '../components/QuestionCard';
 
 class GameScreen extends Component {
@@ -67,9 +67,9 @@ class GameScreen extends Component {
     });
 
     if (id.includes('correct')) {
-      const { setScore, correctAction } = this.props;
-      setScore(this.handleScore());
-      correctAction(1);
+      const { dispatchScore, dispatchAction } = this.props;
+      dispatchScore(this.handleScore());
+      dispatchAction(1);
     }
   }
 
@@ -186,9 +186,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getQuestions: (token) => dispatch(actionCreators.getQuestionsThunk(token)),
-  setScore: (score) => dispatch(actionCreators.setScore(score)),
-  correctAction: (assertions) => dispatch(actionCreators.correctAction(assertions)),
+  getQuestions: (token) => dispatch(getQuestionsThunk(token)),
+  dispatchScore: (score) => dispatch(setScore(score)),
+  dispatchAction: (assertions) => dispatch(correctAction(assertions)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreen);
