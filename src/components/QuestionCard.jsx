@@ -25,7 +25,8 @@ class QuestionCard extends Component {
   }
 
   render() {
-    const { answerClickHandler, question, isButtonDisabled } = this.props;
+    const { answerClickHandler, question, isButtonDisabled, correctColor,
+      incorrectColor } = this.props;
     const { options, incorrectOptions } = this.state;
     return (
       <section className="section-question-card">
@@ -47,6 +48,10 @@ class QuestionCard extends Component {
                 incorrectOptions.includes(option)
                   ? `wrong-answer-${incorrectOptions.indexOf(option)}`
                   : 'correct-answer'
+              }
+              className={
+                incorrectOptions.includes(option)
+                  ? incorrectColor : correctColor
               }
             >
               { option }

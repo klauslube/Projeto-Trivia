@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { getQuestionsThunk, setScore, correctAction } from '../redux/action';
 import QuestionCard from '../components/QuestionCard';
+import '../css/Game.css';
 
 class GameScreen extends Component {
   constructor() {
@@ -16,6 +17,8 @@ class GameScreen extends Component {
       timer: 30,
       isButtonDisabled: false,
       questionsAnsweredCounter: 0,
+      correctColor: '',
+      incorrectColor: '',
     };
   }
 
@@ -64,6 +67,8 @@ class GameScreen extends Component {
       isButtonNextVisible: true,
       answers,
       isButtonDisabled: true,
+      correctColor: 'greenButton',
+      incorrectColor: 'redButton',
     });
 
     if (id.includes('correct')) {
@@ -117,6 +122,8 @@ class GameScreen extends Component {
       isLoading: true,
       timer: 30,
       isButtonDisabled: false,
+      correctColor: '',
+      incorrectColor: '',
     }, () => this.setState({ isLoading: false }));
 
     this.setState((prevState) => ({
@@ -145,8 +152,8 @@ class GameScreen extends Component {
 
   render() {
     const { game: { questions } } = this.props;
-    const { isLoading,
-      isButtonNextVisible, currentQuestion, isButtonDisabled, timer } = this.state;
+    const { isLoading, isButtonNextVisible, currentQuestion, isButtonDisabled,
+      timer, correctColor, incorrectColor } = this.state;
     return (
       <>
         <Header />
@@ -160,6 +167,8 @@ class GameScreen extends Component {
                 isButtonDisabled={ isButtonDisabled }
                 answerClickHandler={ this.answerClickHandler }
                 question={ questions[currentQuestion] }
+                correctColor={ correctColor }
+                incorrectColor={ incorrectColor }
               />)}
               { isButtonNextVisible && (
                 <button
