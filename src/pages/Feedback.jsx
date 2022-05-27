@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Header from '../components/Header';
 
 class Feedback extends Component {
   render() {
     const { score, assertions } = this.props;
-    // const { feedbackText } = this.state;
     const assertionsComp = 3;
     console.log('feedback assertions', assertions);
     return (
       <section>
+        <Header />
         <h2 data-testid="feedback-text">
           {
             assertions < assertionsComp ? 'Could be better...' : 'Well Done!'
