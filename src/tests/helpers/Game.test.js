@@ -1,6 +1,6 @@
 import React from "react";
 import renderWithRouterAndRedux from "./renderWithRouterAndRedux";
-import { screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from '../../App'
 import { tokenResponse } from "../../../cypress/mocks/token";
@@ -33,6 +33,7 @@ const mockFetch = (url) => {
       json: () => Promise.resolve(questionsResponse)
     })
   }
+
 }
 
 
@@ -57,7 +58,7 @@ describe('Testa a Game page e suas funcionalidades', () => {
     expect(playerScore).toContainHTML(0); // alternativa 
   })
   test('testa se existe um token valido no local storage', async () => {
-    renderWithRouterAndRedux(<App /> , initialStateHeader, '/')
+    const {debug} = renderWithRouterAndRedux(<App /> , initialStateHeader, '/')
     
       // const apiResponse = Promise.resolve({
       //   json: () => Promise.resolve(tokenResponse),
@@ -76,28 +77,31 @@ describe('Testa a Game page e suas funcionalidades', () => {
       expect(global.fetch).toBeCalled();
       expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
       expect(global.fetch).toHaveReturned();
-      // expect(global.fetch).toHaveReturnedWith(tokenData); nao sei pq esta retornando {} ao inves do token
+      // expect(global.fetch).toHaveReturnedWith(tokenData);
 
     })
     
     // Achar como fazer o mock para verificar o token  no local storage
   
-  // const localStorageMock = {
-  // getItem: jest.fn(),
-  // setItem: jest.fn(),
-  // clear: jest.fn()
-  // };
+  const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  clear: jest.fn()
+  };
 
-  // global.localStorage = localStorageMock;
-  //   expect(global.fetch).toBeCalled();
-    // expect(localStorageMock.getItem).toHaveBeenCalledTimes(1);
+  global.localStorage = localStorageMock;
+    // expect(global.fetch).toBeCalled();
+    // expect(localStorageMock.setItem).toHaveBeenCalledTimes(1);
+    // expect(localStorageMock.getItem.mock.calls.length).toBe(1)
     // expect(localStorageMock.getItem).toHaveBeenCalledWith(tokenResponse.token)
 
-
+    const localStorageItem = localStorage.getItem('token');
+    expect(localStorageItem).toBe(tokenData.token);
   })
-  // test('testa se o usuario é redirecionado para a page de login caso esteja com um token invalido, e se esse token é deletado', () => {
+  test('testa se o usuario é redirecionado para a page de login caso esteja com um token invalido, e se esse token é deletado', () => {
+    renderWithRouterAndRedux(<App /> , initialStateHeader, "/game")  ;
     
-  // })
+    })
   // test('testa se é feito a requisição para a API de perguntas',() => {
   //   renderWithRouterAndRedux(<App /> , initialStateHeader, '/game')
 

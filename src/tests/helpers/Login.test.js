@@ -3,6 +3,7 @@ import renderWithRouterAndRedux from "./renderWithRouterAndRedux";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from '../../App'
+import { questionsResponse } from "../../../cypress/mocks/questions";
 
 import {
   VALID_USER, 
@@ -27,27 +28,42 @@ const tokenData = {
   "token":"f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6"
 }
 
-afterEach(() => jest.clearAllMocks());
 
-const apiResponse = Promise.resolve({
-  json: () => Promise.resolve(tokenData),
-});
+const mockFetch = (url) => {
+  if (url === 'https://opentdb.com/api_token.php?command=request') {
+    return Promise.resolve({
+      json: () => Promise.resolve(tokenData)
+    })
+  }
+  
+  if (url === (`https://opentdb.com/api.php?amount=5&token=${tokenData.token}`)) {
+    return Promise.resolve({
+      json: () => Promise.resolve(questionsResponse)
+    })
+  }
+  
+}
 
-// global.fetch = jest.fn(() => apiResponse); // nao funciona
-
-jest.spyOn(global, 'fetch').mockImplementation(() => apiResponse);
-
-const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  clear: jest.fn()
-};
-
-global.localStorage = localStorageMock;
-
-
-describe('Testa a page Login', () => {
-  test('teste se a página é renderizada no endpoint "/"', () => {
+// const apiResponse = Promise.resolve({
+  //   json: () => Promise.resolve(tokenData),
+  // });
+  
+  // // global.fetch = jest.fn(() => apiResponse); // nao funciona
+  
+  // jest.spyOn(global, 'fetch').mockImplementation(() => apiResponse);
+  
+  // const localStorageMock = {
+    // getItem: jest.fn(),
+    // setItem: jest.fn(),
+    // clear: jest.fn()
+  // };
+  // 
+  // global.localStorage = localStorageMock;
+  
+  afterEach(() => jest.clearAllMocks());
+  
+  describe('Testa a page Login', () => {
+    test('teste se a página é renderizada no endpoint "/"', () => {
     const {history} = renderWithRouterAndRedux(<App />, initialState, "/");
     expect(history.location.pathname).toBe('/');
   })
@@ -136,32 +152,36 @@ describe('Testa a page Login', () => {
     expect(history.location.pathname).toBe('/settings')
 
   })
-  // test('teste se ao clicar no button play, é feita uma requisição para a API e recebido um token', async () => {
-  //   renderWithRouterAndRedux(<App />, initialState, "/");
+  test('teste se ao clicar no button play, é feita uma requisição para a API e recebido um token', async () => {
+    renderWithRouterAndRedux(<App />, initialState, "/");
+    jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
   
-  //   const button = screen.getAllByRole('button');
-  //   const Input = screen.getAllByRole('textbox');
-  //   userEvent.type(Input[0], VALID_USER);
-  //   userEvent.type(Input[1], VALID_EMAIL);
-  //   userEvent.click(button[0]);
+    const button = screen.getAllByRole('button');
+    const Input = screen.getAllByRole('textbox');
+    userEvent.type(Input[0], VALID_USER);
+    userEvent.type(Input[1], VALID_EMAIL);
+    userEvent.click(button[0]);
 
-  //   await waitFor(() => {
-  //     expect(global.fetch).toBeCalled();
-  //     expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
-  //     // expect(global.fetch).toHaveReturnedWith(tokenData);
+    await waitFor(() => {
+      expect(global.fetch).toBeCalled();
+      expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
+      // expect(global.fetch).toHaveReturnedWith(tokenData);
 
-  //   })
+    })
 
-  // })
-  // test('teste se o token recebido da API é salvo no localStorage', () => {
-  //   renderWithRouterAndRedux(<App />, initialState, "/");
+  })
+  test('teste se o token recebido da API é salvo no localStorage', () => {
+    renderWithRouterAndRedux(<App />, initialState, "/");
 
-  //   const button = screen.getAllByRole('button');
-  //   const Input = screen.getAllByRole('textbox');
-  //   userEvent.type(Input[0], VALID_USER);
-  //   userEvent.type(Input[1], VALID_EMAIL);
-  //   userEvent.click(button[0]);
+    const button = screen.getAllByRole('button');
+    const Input = screen.getAllByRole('textbox');
+    userEvent.type(Input[0], VALID_USER);
+    userEvent.type(Input[1], VALID_EMAIL);
+    userEvent.click(button[0]);
 
-  //   expect(localStorageMock.getItem).toHaveBeenCalledWith(tokenData)
-  // })
+
+    const localStorageItem = localStorage.getItem('token');
+    expect(localStorageItem).toBe(tokenData.token);
+    // expect(localStorageMock.getItem).toHaveBeenCalledWith(tokenData)
+  })
 })
