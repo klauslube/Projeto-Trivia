@@ -88,20 +88,7 @@ describe('Testa a Game page e suas funcionalidades', () => {
 
     expect(history.location.pathname).toBe('/game');
     expect(global.fetch).toBeCalledWith(`https://opentdb.com/api.php?amount=5&token=${tokenResponse.token}`)
-    
-    // Achar como fazer o mock para verificar o token  no local storage
-  
-  // const localStorageMock = {
-  // getItem: jest.fn(),
-  // setItem: jest.fn(),
-  // clear: jest.fn()
-  // };
 
-  // global.localStorage = localStorageMock;
-    // expect(global.fetch).toBeCalled();
-    // expect(localStorageMock.setItem).toHaveBeenCalledTimes(1);
-    // expect(localStorageMock.getItem.mock.calls.length).toBe(1)
-    // expect(localStorageMock.getItem).toHaveBeenCalledWith(tokenResponse.token)
   })
   test('testa se o usuario é redirecionado para a page de login caso esteja com um token invalido, e se esse token é deletado', async () => {
     const {history} = renderWithRouterAndRedux(<App /> ,{}, "/")  ;
@@ -119,9 +106,7 @@ describe('Testa a Game page e suas funcionalidades', () => {
       expect(global.fetch).toHaveReturned();
     })
     expect(history.location.pathname).toBe('/')
-    // expect(global.fetch).toBeCalledWith(`https://opentdb.com/api.php?amount=5&token=${invalidTokenResponse.token}`)
     const localStorageItem = localStorage.getItem('token');
-    // expect(history.location.pathname).toBe('/')
     expect(localStorageItem).toBeNull();
 
     })
