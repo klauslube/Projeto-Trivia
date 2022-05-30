@@ -1,15 +1,15 @@
 import { actionTypes } from '../action';
 
 const INITIAL_STATE = {
-  player: {
-    name: '',
-    gravatarEmail: '',
-    score: 0,
-    assertions: 0,
-  },
+  name: '',
+  gravatarEmail: '',
+  score: 0,
+  assertions: 0,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
+  console.log('playerReducer', action.valor);
+  console.log('playerReducer - state', state.assertions);
   switch (action.type) {
   case actionTypes.PICTURE_ACTION:
     return {
@@ -27,6 +27,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       ...action.playerInfo,
+    };
+  case actionTypes.ASSERTIONS_ACTION:
+    return {
+      ...state,
+      assertions: state.assertions + action.valor,
     };
 
   default:

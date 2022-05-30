@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
-import { actionCreators } from '../redux/action';
+import { pictureAction } from '../redux/action';
 
 class Header extends Component {
   componentDidMount() {
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  savePicture: (picture) => dispatch(actionCreators.pictureAction(picture)),
+  savePicture: (picture) => dispatch(pictureAction(picture)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

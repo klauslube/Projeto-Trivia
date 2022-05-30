@@ -7,6 +7,7 @@ const SET_PLAYER = 'SET_PLAYER';
 const QUESTIONS_ACTION = 'QUESTIONS_ACTION';
 const SCORE_ACTION = 'SCORE_ACTION';
 const INVALID_TOKEN = 'INVALID_TOKEN';
+const ASSERTIONS_ACTION = 'ASSERTIONS_ACTION';
 
 export const actionTypes = {
   TOKEN_ACTION,
@@ -15,46 +16,52 @@ export const actionTypes = {
   QUESTIONS_ACTION,
   SCORE_ACTION,
   INVALID_TOKEN,
+  ASSERTIONS_ACTION,
 };
 
 // ACTIONS CREATORS
 
-const setToken = (token) => ({
+export const setToken = (token) => ({
   type: TOKEN_ACTION,
   token,
 });
 
-const setPlayer = (playerInfo) => ({
+export const setPlayer = (playerInfo) => ({
   type: SET_PLAYER,
   playerInfo,
 });
 
-const setQuestions = (questions) => ({
+export const setQuestions = (questions) => ({
   type: QUESTIONS_ACTION,
   questions,
 });
 
-const setScore = (score) => ({
+export const setScore = (score) => ({
   type: SCORE_ACTION,
   score,
 });
 
-const pictureAction = (picture) => ({
+export const pictureAction = (picture) => ({
   type: PICTURE_ACTION,
   picture,
 });
 
-const invalidToken = () => ({
+export const invalidToken = () => ({
   type: INVALID_TOKEN,
 });
 
-const getTokenThunk = () => async (dispatch) => {
+export const correctAction = (valor) => ({
+  type: ASSERTIONS_ACTION,
+  valor,
+});
+
+export const getTokenThunk = () => async (dispatch) => {
   const result = await getToken();
   localStorage.setItem('token', result.token);
   dispatch(setToken(result.token));
 };
 
-const getQuestionsThunk = () => async (dispatch) => {
+export const getQuestionsThunk = () => async (dispatch) => {
   const error = 3;
   const token = localStorage.getItem('token');
   const result = await getQuestions(token);
@@ -64,14 +71,4 @@ const getQuestionsThunk = () => async (dispatch) => {
   } else {
     dispatch(setQuestions(result.results));
   }
-};
-
-export const actionCreators = {
-  setToken,
-  getTokenThunk,
-  setQuestions,
-  setPlayer,
-  setScore,
-  pictureAction,
-  getQuestionsThunk,
 };

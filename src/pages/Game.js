@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { actionCreators } from '../redux/action';
+import { getQuestionsThunk, setScore, correctAction } from '../redux/action';
 import QuestionCard from '../components/QuestionCard';
+import '../css/Game.css';
 
 class GameScreen extends Component {
   constructor() {
@@ -16,6 +17,8 @@ class GameScreen extends Component {
       timer: 30,
       isButtonDisabled: false,
       questionsAnsweredCounter: 0,
+      correctColor: '',
+      incorrectColor: '',
     };
   }
 
@@ -64,12 +67,14 @@ class GameScreen extends Component {
       isButtonNextVisible: true,
       answers,
       isButtonDisabled: true,
+      correctColor: 'greenButton',
+      incorrectColor: 'redButton',
     });
 
     if (id.includes('correct')) {
-      const { setScore, correctAction } = this.props;
-      setScore(this.handleScore());
-      correctAction(1);
+      const { dispatchScore, dispatchAction } = this.props;
+      dispatchScore(this.handleScore());
+      dispatchAction(1);
     }
   }
 
@@ -117,6 +122,8 @@ class GameScreen extends Component {
       isLoading: true,
       timer: 30,
       isButtonDisabled: false,
+      correctColor: '',
+      incorrectColor: '',
     }, () => this.setState({ isLoading: false }));
 
     this.setState((prevState) => ({
@@ -145,8 +152,8 @@ class GameScreen extends Component {
 
   render() {
     const { game: { questions } } = this.props;
-    const { isLoading,
-      isButtonNextVisible, currentQuestion, isButtonDisabled, timer } = this.state;
+    const { isLoading, isButtonNextVisible, currentQuestion, isButtonDisabled,
+      timer, correctColor, incorrectColor } = this.state;
     return (
       <>
         <Header />
@@ -160,6 +167,8 @@ class GameScreen extends Component {
                 isButtonDisabled={ isButtonDisabled }
                 answerClickHandler={ this.answerClickHandler }
                 question={ questions[currentQuestion] }
+                correctColor={ correctColor }
+                incorrectColor={ incorrectColor }
               />)}
               { isButtonNextVisible && (
                 <button
@@ -186,9 +195,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getQuestions: (token) => dispatch(actionCreators.getQuestionsThunk(token)),
-  setScore: (score) => dispatch(actionCreators.setScore(score)),
-  correctAction: (assertions) => dispatch(actionCreators.correctAction(assertions)),
+  getQuestions: (token) => dispatch(getQuestionsThunk(token)),
+  dispatchScore: (score) => dispatch(setScore(score)),
+  dispatchAction: (assertions) => dispatch(correctAction(assertions)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreen);
