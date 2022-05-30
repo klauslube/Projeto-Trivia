@@ -5,3 +5,7 @@ export const readToken = () => (
 export const addToken = (token) => {
   localStorage.setItem('token', token);
 };
+
+export const readRanking = () => (
+  JSON.parse(localStorage.getItem('ranking')) || ''
+);
