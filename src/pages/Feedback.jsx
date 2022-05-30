@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import CreateButton from '../components/CreateButton';
+import { resetUserAction } from '../redux/action';
 
 class Feedback extends Component {
   render() {
-    const { score, assertions, history } = this.props;
+    const { score, assertions, history, reset } = this.props;
     const assertionsComp = 3;
     return (
       <section>
@@ -30,12 +31,18 @@ class Feedback extends Component {
         <CreateButton
           placeholder="Play Again"
           testID="btn-play-again"
-          onClick={ () => history.push('/') }
+          onClick={ () => {
+            history.push('/');
+            reset();
+          } }
         />
         <CreateButton
           placeholder="Ranking"
           testID="btn-ranking"
-          onClick={ () => history.push('/ranking') }
+          onClick={ () => {
+            history.push('/ranking');
+            reset();
+          } }
         />
       </section>
     );
@@ -47,7 +54,11 @@ const mapStateToProps = ({ player: { score, assertions } }) => ({
   assertions,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (Dispatch) => ({
+  reset: () => Dispatch(resetUserAction()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
 
 Feedback.propTypes = {
   Assertions: PropTypes.number,
