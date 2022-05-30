@@ -8,8 +8,8 @@ const INITIAL_STATE = {
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
-  console.log('playerReducer', action.valor);
-  console.log('playerReducer - state', state.assertions);
+  // console.log('playerReducer', action.valor);
+  // console.log('playerReducer - state', state.assertions);
   switch (action.type) {
   case actionTypes.PICTURE_ACTION:
     return {

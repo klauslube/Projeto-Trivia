@@ -13,7 +13,6 @@ class GameScreen extends Component {
       isLoading: true,
       isButtonNextVisible: false,
       currentQuestion: 0,
-      answers: [],
       timer: 30,
       isButtonDisabled: false,
       questionsAnsweredCounter: 0,
@@ -53,19 +52,10 @@ class GameScreen extends Component {
     }), secondIntervalInMS);
   }
 
-  answerClickHandler = ({ target: { parentElement, id } }) => {
+  answerClickHandler = ({ target: { id } }) => {
     // https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement
-    const answers = parentElement.querySelectorAll('input');
-    answers.forEach((answer) => {
-      if (answer.id.includes('correct')) {
-        answer.className = 'correct-answer';
-      } else {
-        answer.className = 'wrong-answer';
-      }
-    });
     this.setState({
       isButtonNextVisible: true,
-      answers,
       isButtonDisabled: true,
       correctColor: 'greenButton',
       incorrectColor: 'redButton',
@@ -95,26 +85,26 @@ class GameScreen extends Component {
       const firstPlayer = JSON.stringify([{ name, score, picture }]);
       localStorage.setItem('ranking', firstPlayer);
     } else {
-      const negative = -1;
+      //   const negative = -1;
       const rankingArray = JSON.parse(ranking);
-      const newRanking = [...rankingArray, { name, score, picture }]
-        .sort((a, b) => {
-          if (a.score > b.score) return negative;
-          if (a.score < b.score) return 1;
-          return 0;
-        });
+      const newRanking = [...rankingArray, { name, score, picture }];
+      //     .sort((a, b) => {
+      //       if (a.score > b.score) return negative;
+      //       if (a.score < b.score) return 1;
+      //       return 0;
+      //     });
       const newRankingString = JSON.stringify(newRanking);
       localStorage.setItem('ranking', newRankingString);
     }
   }
 
   handleNextQuestion = () => {
-    const { currentQuestion, answers } = this.state;
+    const { currentQuestion } = this.state;
     const maxAnswers = 5;
 
-    answers.forEach((answer) => {
-      answer.className = '';
-    });
+    // answers.forEach((answer) => {
+    //   answer.className = '';
+    // });
 
     this.setState({
       currentQuestion: currentQuestion + 1,

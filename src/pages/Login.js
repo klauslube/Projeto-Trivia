@@ -18,17 +18,6 @@ class Login extends Component {
     };
   }
 
-  componentDidMount() {
-    // const { dispatch } = this.props;
-
-    // const INITIAL_STATE = {
-    //   name: '',
-    //   gravatarEmail: '',
-    //   score: 0,
-    // };
-    // dispatch(actionCreators.setPlayer(INITIAL_STATE));
-  }
-
   handleChange = ({ target: { value, name } }) => {
     const minLength = 6;
     const includeCheck = ['@', '.com'];
@@ -43,18 +32,6 @@ class Login extends Component {
       this.setState({ isDisable: !disabled });
     });
   }
-
-  /* getToken = async () => {
-    const response = await fetch('https://opentdb.com/api_token.php?command=request');
-    const { history } = this.props;
-    try {
-      const dados = await response.json();
-      addToken(dados.token);
-      history.push('/jogos');
-    } catch (error) {
-      console.log(error);
-    }
-  } */
 
   handlePlayClick = async () => {
     const { history, dispatch } = this.props;
