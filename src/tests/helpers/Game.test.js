@@ -1,6 +1,6 @@
 import React from "react";
 import renderWithRouterAndRedux from "./renderWithRouterAndRedux";
-import { getByTestId, render, screen, waitFor } from "@testing-library/react";
+import { getByTestId, getByText, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from '../../App'
 import { tokenResponse, invalidTokenResponse } from "../../../cypress/mocks/token";
@@ -39,7 +39,7 @@ const mockFecthInvalid = (url) => {
     })
   }
 
-  if (url === (`https://opentdb.com/api.php?amount=5&token=${tokenResponse.token}`)) {
+  if (url === (`https://opentdb.com/api.php?amount=5&token=${invalidTokenResponse.token}`)) {
     return Promise.resolve({
       json: () => Promise.resolve(invalidTokenQuestionsResponse)
     })
@@ -56,7 +56,7 @@ describe('Testa a Game page e suas funcionalidades', () => {
     const playerImg = screen.getByRole('img', {  name: /profile\-img/i})
   
     expect(playerImg).toBeInTheDocument();
-    // expect(playerImg).toHaveAttribute('src','https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50')  // verificar como achar valor src correto 
+    expect(playerImg).toHaveAttribute('src');
 
     const playerName = screen.getByTestId('header-player-name');
     expect(playerName).toBeInTheDocument();
@@ -103,7 +103,7 @@ describe('Testa a Game page e suas funcionalidades', () => {
     // expect(localStorageMock.getItem.mock.calls.length).toBe(1)
     // expect(localStorageMock.getItem).toHaveBeenCalledWith(tokenResponse.token)
   })
-  test.skip('testa se o usuario é redirecionado para a page de login caso esteja com um token invalido, e se esse token é deletado', () => {
+  test('testa se o usuario é redirecionado para a page de login caso esteja com um token invalido, e se esse token é deletado', async () => {
     const {history} = renderWithRouterAndRedux(<App /> ,{}, "/")  ;
     jest.spyOn(global, 'fetch').mockImplementation(mockFecthInvalid);
 
@@ -112,18 +112,17 @@ describe('Testa a Game page e suas funcionalidades', () => {
     userEvent.type(Input[0], VALID_USER);
     userEvent.type(Input[1], VALID_EMAIL);
     userEvent.click(button[0]);
-    
-    // const localStorageMock = {
-    //   getItem: jest.fn(),
-    //   setItem: jest.fn(),
-    //   removeItem: jest.fn(),
-    
-      // global.localStorage = localStorageMock;
-      //  expect(localStorageMock.removeItem).toHaveBeenCalledTimes(1);
-    const localStorageItem = localStorage.getItem('token');
-
-    expect(localStorageItem).toBeNull();
+  
+    await waitFor(() => {
+      expect(global.fetch).toBeCalled();
+      expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
+      expect(global.fetch).toHaveReturned();
+    })
     expect(history.location.pathname).toBe('/')
+    // expect(global.fetch).toBeCalledWith(`https://opentdb.com/api.php?amount=5&token=${invalidTokenResponse.token}`)
+    const localStorageItem = localStorage.getItem('token');
+    // expect(history.location.pathname).toBe('/')
+    expect(localStorageItem).toBeNull();
 
     })
   test('testa se é exibido a categoria, texto e alternativas da pergunta de forma correta e btn next',async () => {
@@ -272,20 +271,26 @@ describe('Testa a Game page e suas funcionalidades', () => {
     expect(correctAnswer && wrongAnswer).toBeInTheDocument();
     userEvent.click(screen.getByTestId('correct-answer'));
     
+    expect(screen.getByTestId('header-score')).toBeInTheDocument();
     
 
     expect(screen.getByTestId('btn-next')).toBeInTheDocument();
     userEvent.click(screen.getByTestId('btn-next'));
+    expect(screen.getByText('40')).toHaveTextContent('40');
     userEvent.click(screen.getByTestId('correct-answer'));
     userEvent.click(screen.getByTestId('btn-next'));
+    expect(screen.getByText('140')).toHaveTextContent('140');
     userEvent.click(screen.getByTestId('correct-answer'));
     userEvent.click(screen.getByTestId('btn-next'));
+    // expect(screen.getByText('40')).toHaveTextContent('40');
     userEvent.click(screen.getByTestId('correct-answer'));
     userEvent.click(screen.getByTestId('btn-next'));
+    // expect(screen.getByText('40')).toHaveTextContent('40');
     userEvent.click(screen.getByTestId('correct-answer'));
     userEvent.click(screen.getByTestId('btn-next'));
+    expect(screen.getByTestId('header-score')).toHaveTextContent('350');
     expect(history.location.pathname).toBe('/feedback');
-    debug();
+    // debug();
     
     })
 })
