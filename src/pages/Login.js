@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CreateInput from '../components/CreateInput';
 import CreateButton from '../components/CreateButton';
+// import { addToken } from '../services/localStore';
 import { getTokenThunk, setPlayer } from '../redux/action';
 
 class Login extends Component {
@@ -15,6 +16,17 @@ class Login extends Component {
       userName: '',
       userEmail: '',
     };
+  }
+
+  componentDidMount() {
+    // const { dispatch } = this.props;
+
+    // const INITIAL_STATE = {
+    //   name: '',
+    //   gravatarEmail: '',
+    //   score: 0,
+    // };
+    // dispatch(actionCreators.setPlayer(INITIAL_STATE));
   }
 
   handleChange = ({ target: { value, name } }) => {
@@ -32,14 +44,26 @@ class Login extends Component {
     });
   }
 
+  /* getToken = async () => {
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const { history } = this.props;
+    try {
+      const dados = await response.json();
+      addToken(dados.token);
+      history.push('/jogos');
+    } catch (error) {
+      console.log(error);
+    }
+  } */
+
   handlePlayClick = async () => {
-    const { history, dispatchGetToken, dispatchSetPlayer } = this.props;
+    const { history, dispatch } = this.props;
     const { userName, userEmail } = this.state;
-    await dispatchGetToken();
-    dispatchSetPlayer({
+    await dispatch(getTokenThunk());
+    dispatch(setPlayer({
       name: userName,
       gravatarEmail: userEmail,
-    });
+    }));
     history.push('/game');
   }
 
@@ -83,16 +107,16 @@ class Login extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  dispatchGetToken: () => dispatch(getTokenThunk()),
-  dispatchSetPlayer: (player) => dispatch(setPlayer(player)),
-});
+/* const mapStateToProps = (state) => ({
+  token: state.token,
+}); */
 
-export default connect(null, mapDispatchToProps)(Login);
+// const mapDispatchToProps = (dispatch) => ({});
+
+export default connect()(Login);
 
 Login.propTypes = {
-  dispatchGetToken: PropTypes.func.isRequired,
-  dispatchSetPlayer: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
