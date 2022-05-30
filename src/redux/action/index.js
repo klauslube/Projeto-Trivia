@@ -8,6 +8,7 @@ const QUESTIONS_ACTION = 'QUESTIONS_ACTION';
 const SCORE_ACTION = 'SCORE_ACTION';
 const INVALID_TOKEN = 'INVALID_TOKEN';
 const ASSERTIONS_ACTION = 'ASSERTIONS_ACTION';
+const RESET_ACTION = 'RESET_ACTION';
 
 export const actionTypes = {
   TOKEN_ACTION,
@@ -17,6 +18,7 @@ export const actionTypes = {
   SCORE_ACTION,
   INVALID_TOKEN,
   ASSERTIONS_ACTION,
+  RESET_ACTION,
 };
 
 // ACTIONS CREATORS
@@ -53,6 +55,10 @@ export const invalidToken = () => ({
 export const correctAction = (valor) => ({
   type: ASSERTIONS_ACTION,
   valor,
+});
+
+export const resetUserAction = () => ({
+  type: RESET_ACTION,
 });
 
 export const getTokenThunk = () => async (dispatch) => {

@@ -33,6 +33,13 @@ const playerReducer = (state = INITIAL_STATE, action) => {
       ...state,
       assertions: state.assertions + action.valor,
     };
+  case actionTypes.RESET_ACTION:
+    return {
+      name: '',
+      gravatarEmail: '',
+      score: 0,
+      assertions: 0,
+    };
 
   default:
     return state;
