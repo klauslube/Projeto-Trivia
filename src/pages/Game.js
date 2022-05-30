@@ -26,8 +26,7 @@ class GameScreen extends Component {
     const { getQuestions, history } = this.props;
     await getQuestions();
     const { invalidToken } = this.props;
-    console.log(invalidToken);
-    if (invalidToken === true) {
+    if (invalidToken) {
       history.push('/');
       localStorage.removeItem('token');
     }
@@ -56,13 +55,6 @@ class GameScreen extends Component {
   answerClickHandler = ({ target: { parentElement, id } }) => {
     // https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement
     const answers = parentElement.querySelectorAll('input');
-    answers.forEach((answer) => {
-      if (answer.id.includes('correct')) {
-        answer.className = 'correct-answer';
-      } else {
-        answer.className = 'wrong-answer';
-      }
-    });
     this.setState({
       isButtonNextVisible: true,
       answers,
