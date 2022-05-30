@@ -68,7 +68,7 @@ describe('Testa a Game page e suas funcionalidades', () => {
     expect(playerScore).toContainHTML(0); // alternativa 
   })
   test('testa se é feito a requisição para a API de perguntas ', async () => {
-    const {history} = renderWithRouterAndRedux(<App /> , initialStateHeader, '/')
+    const {history} = renderWithRouterAndRedux(<App /> , {}, '/')
     
     jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
 
@@ -126,7 +126,7 @@ describe('Testa a Game page e suas funcionalidades', () => {
     expect(history.location.pathname).toBe('/')
 
     })
-  test('testa se é exibido a categoria, texto e alternativas da pergunta de forma correta',async () => {
+  test('testa se é exibido a categoria, texto e alternativas da pergunta de forma correta e btn next',async () => {
     const {history, debug} = renderWithRouterAndRedux(<App /> , {},"/");
 
     jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
@@ -152,13 +152,11 @@ describe('Testa a Game page e suas funcionalidades', () => {
       "answer-options",
       "correct-answer",
       'wrong-answer-0',
-      // 'wrong-answer-1',
-      // 'wrong-answer-2',
+      'wrong-answer-1',
+      'wrong-answer-2',
     ];
 
-    questionCardDataId.forEach((dataId) => {
-      expect(screen.getByTestId(dataId)).toBeInTheDocument();
-    })
+    
     expect(screen.getAllByTestId(questionCardDataId[0])).toHaveLength(1); // testa se mostra uma pergunta de cada vez
 
     const correctAnswer = screen.getByTestId('correct-answer'); 
@@ -169,38 +167,24 @@ describe('Testa a Game page e suas funcionalidades', () => {
     userEvent.click(wrongAnswer);
     expect(screen.getByTestId('btn-next')).toBeInTheDocument(); // testa se ao clicar na reposta errada aparece btn next
     
-    // const categoryText = screen.getByTestId('question-category');
-    // const questionText = screen.getByTestId('question-text');
-    // const answerOptions = screen.getByTestId('answer-options');
-    // const correctAnswer = screen.getByTestId('correct-answer');
-    // const wrongAnswer = screen.getByTestId('wrong-answer-0');
-    debug()
-    // expect(categoryText).toBeInTheDocument();
-    // expect(questionText).toBeInTheDocument();
-    // expect(answerOptions).toBeInTheDocument();
-    // expect(correctAnswer).toBeInTheDocument();
-    // expect(wrongAnswer).toBeInTheDocument();
-
-    // questionsResponse.results.forEach((question) => {
-    //   if(question.type === 'multiple') {
-    //       const correctAnswer = screen.getByTestId('correct-answer');
-    //   const wrongAnswer0 = screen.getByTestId('wrong-answer-0');
-    //   // const wrongAnswer1 = screen.getByTestId('wrong-answer-1');
-    //   // const wrongAnswer2 = screen.getByTestId('wrong-answer-2');
-
-    //   expect(correctAnswer).toBeInTheDocument();
-    //   expect(wrongAnswer0).toBeInTheDocument();
-    //   // expect(wrongAnswer1).toBeInTheDocument();
-    //   // expect(wrongAnswer2).toBeInTheDocument();
-    //   }
+    userEvent.click(screen.getByTestId('btn-next'));
+    // debug()
     
-    //   })
+    questionCardDataId.forEach((dataId) => {
+      expect(screen.getByTestId(dataId)).toBeInTheDocument();
+      expect(screen.getByTestId(dataId)).toBeEnabled();
+    })
+    userEvent.click(screen.getByTestId(questionCardDataId[3]));
+    const btnsDisabled = screen.getAllByRole('button');
+    expect(btnsDisabled[0] && btnsDisabled[1] && btnsDisabled[2] && btnsDisabled[3]).toBeDisabled();
+    
+
   })
   // test('testa se as alternativas são exibidas em ordem aleatória', () => {
 
   // })
   test('testa se a alternativa correta fica com a cor verde ao acertar a questão, e as erradas com cor vermelha', async () => {
-    const {history, debug} = renderWithRouterAndRedux(<App /> , {},"/");
+    const {history} = renderWithRouterAndRedux(<App /> , {},"/");
 
     jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
 
@@ -219,29 +203,89 @@ describe('Testa a Game page e suas funcionalidades', () => {
     expect(global.fetch).toBeCalledWith(`https://opentdb.com/api.php?amount=5&token=${tokenResponse.token}`)
     history.push('/game');
 
-    const questionCardDataId = [
-      "question-text",
-      "question-category",
-      "answer-options",
-      "correct-answer",
-      'wrong-answer-0',
-      // 'wrong-answer-1',
-      // 'wrong-answer-2',
-    ];
-
     const correctAnswer = screen.getByTestId('correct-answer');
     const wrongAnswer = screen.getByTestId('wrong-answer-0');
     userEvent.click(correctAnswer);
-    // expect(correctAnswer).toHaveAttribute('style','border: 3px solid rgb(6, 240, 15)');
-    // const style = window.getComputedStyle(correctAnswer);
-    // expect(correctAnswer).toHaveStyle('border: 3px solid rgb(6, 240, 15)')
     expect(wrongAnswer).toHaveClass('redButton');
-    expect(wrongAnswer).toHaveStyle('border: 3px solid red')
+    expect(correctAnswer).toHaveClass('greenButton');
   })
-  // test('testa se as alternativas erradas tem cor vermelha ao errar a questão, e a certa com cor verde', () => {
+  test('testa o temporizador das perguntas', async () => {
+    const {history} = renderWithRouterAndRedux(<App /> , {},"/");
 
-  // })
-  // test('testa o temporizador das perguntas', () => {
+    jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
 
-  // })
+    jest.useFakeTimers();
+    // const timerMock = jest.spyOn(global, 'setInterval');
+
+    const button = screen.getAllByRole('button');
+    const Input = screen.getAllByRole('textbox');
+    userEvent.type(Input[0], VALID_USER);
+    userEvent.type(Input[1], VALID_EMAIL);
+    userEvent.click(button[0]);
+
+    await waitFor(() => {
+      expect(global.fetch).toBeCalled();
+      expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
+      expect(global.fetch).toHaveReturned();
+    })
+
+    expect(global.fetch).toBeCalledWith(`https://opentdb.com/api.php?amount=5&token=${tokenResponse.token}`)
+    history.push('/game');
+    
+    const correctAnswer = screen.getByTestId('correct-answer');
+    const wrongAnswer = screen.getByTestId('wrong-answer-0');
+
+    expect(correctAnswer && wrongAnswer).toBeInTheDocument();
+
+    const timerText = screen.getByText(/Tempo Restante/i);
+    expect(timerText).toBeInTheDocument();
+
+    expect(correctAnswer && wrongAnswer).toBeEnabled();
+    jest.advanceTimersByTime(30000);
+    expect(correctAnswer && wrongAnswer).toBeDisabled();
+
+
+  })
+    test('testa uma partida com cinco acertos', async () => {
+      const {history, debug} = renderWithRouterAndRedux(<App /> , {},"/");
+
+    jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+
+    const button = screen.getAllByRole('button');
+    const Input = screen.getAllByRole('textbox');
+    userEvent.type(Input[0], VALID_USER);
+    userEvent.type(Input[1], VALID_EMAIL);
+    userEvent.click(button[0]);
+
+    await waitFor(() => {
+      expect(global.fetch).toBeCalled();
+      expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
+      expect(global.fetch).toHaveReturned();
+    })
+
+    expect(global.fetch).toBeCalledWith(`https://opentdb.com/api.php?amount=5&token=${tokenResponse.token}`)
+    history.push('/game');
+
+    const correctAnswer = screen.getByTestId('correct-answer');
+    const wrongAnswer = screen.getByTestId('wrong-answer-0'); 
+    
+    expect(correctAnswer && wrongAnswer).toBeInTheDocument();
+    userEvent.click(screen.getByTestId('correct-answer'));
+    
+    
+
+    expect(screen.getByTestId('btn-next')).toBeInTheDocument();
+    userEvent.click(screen.getByTestId('btn-next'));
+    userEvent.click(screen.getByTestId('correct-answer'));
+    userEvent.click(screen.getByTestId('btn-next'));
+    userEvent.click(screen.getByTestId('correct-answer'));
+    userEvent.click(screen.getByTestId('btn-next'));
+    userEvent.click(screen.getByTestId('correct-answer'));
+    userEvent.click(screen.getByTestId('btn-next'));
+    userEvent.click(screen.getByTestId('correct-answer'));
+    userEvent.click(screen.getByTestId('btn-next'));
+    expect(history.location.pathname).toBe('/feedback');
+    debug();
+    
+    })
 })
