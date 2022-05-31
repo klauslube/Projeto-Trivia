@@ -17,8 +17,11 @@ class Ranking extends Component {
 
   ordemScore = (a, b) => {
     const numberNeg = -1;
-    if (a.score > b.score) return numberNeg;
-    if (a.score < b.score) return 1;
+    if (a.score > b.score) {
+      return numberNeg;
+    }
+    const one = 1;
+    return one;
   }
 
   renderRanking = (rank, index) => (

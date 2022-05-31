@@ -102,10 +102,6 @@ class GameScreen extends Component {
     const { currentQuestion } = this.state;
     const maxAnswers = 5;
 
-    // answers.forEach((answer) => {
-    //   answer.className = '';
-    // });
-
     this.setState({
       currentQuestion: currentQuestion + 1,
       isButtonNextVisible: false,

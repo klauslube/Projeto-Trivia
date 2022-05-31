@@ -1,12 +1,12 @@
 import React from "react";
 import renderWithRouterAndRedux from "./renderWithRouterAndRedux";
-import { getByTestId, getByText, render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from '../../App'
 import { tokenResponse, invalidTokenResponse } from "../../../cypress/mocks/token";
 import { questionsResponse, invalidTokenQuestionsResponse } from "../../../cypress/mocks/questions";
 import { VALID_EMAIL, VALID_USER } from "./constants";
-import { toBeInTheDocument } from "@testing-library/jest-dom";
+
 
 
 const initialStateHeader = {
@@ -228,6 +228,9 @@ describe('Testa a Game page e suas funcionalidades', () => {
     jest.advanceTimersByTime(30000);
     expect(correctAnswer && wrongAnswer).toBeDisabled();
 
+    jest.advanceTimersByTime(50000);
+    expect(timerText).toContainHTML('Tempo restante: 0');
+
 
   })
     test('testa uma partida com cinco acertos', async () => {
@@ -275,7 +278,6 @@ describe('Testa a Game page e suas funcionalidades', () => {
     userEvent.click(screen.getByTestId('btn-next'));
     expect(screen.getByTestId('header-score')).toHaveTextContent('350');
     expect(history.location.pathname).toBe('/feedback');
-    // debug();
     
     })
 })
