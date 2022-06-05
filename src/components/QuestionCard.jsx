@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import he from 'he';
+import styles from '../styles/QuestionCard.module.scss';
 
 class QuestionCard extends Component {
   constructor() {
@@ -29,10 +31,25 @@ class QuestionCard extends Component {
       incorrectColor } = this.props;
     const { options, incorrectOptions } = this.state;
     return (
-      <section className="section-question-card">
-        <p data-testid="question-category">{question.category}</p>
-        <h3 data-testid="question-text">{question.question}</h3>
-        <section data-testid="answer-options">
+      <section className={ styles.section_game }>
+        <div className={ styles.div_container_text }>
+          <p
+            data-testid="question-category"
+            className={ styles.question_category }
+          >
+            {`Categoria: ${question.category}`}
+          </p>
+          <h3
+            data-testid="question-text"
+            className={ styles.question_text }
+          >
+            { he.decode(question.question) }
+          </h3>
+        </div>
+        <section
+          data-testid="answer-options"
+          className={ styles.section_container_question_card }
+        >
           {options.map((option, index) => (
             <button
               disabled={ isButtonDisabled }
@@ -51,10 +68,11 @@ class QuestionCard extends Component {
               }
               className={
                 incorrectOptions.includes(option)
-                  ? incorrectColor : correctColor
+                  ? (`${incorrectColor} ${styles.button}`)
+                  : (`${correctColor} ${styles.button}`)
               }
             >
-              { option }
+              { he.decode(option) }
             </button>
           ))}
         </section>

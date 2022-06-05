@@ -1,0 +1,31 @@
+.div-game-screen-container, .section-game-screen, .game-container, .p-data-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.p-data-container {
+  font-size: 1.5rem;
+  min-height: 3rem;
+}
+
+.next-button {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 6vh;
+  margin-top: 1.5rem;
+  padding: 0 10px;
+  width: 24vw;
+}
+
+.greenButton {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.redButton {
+  border: 3px solid red;
+}

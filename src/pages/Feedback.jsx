@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import CreateButton from '../components/CreateButton';
 import { resetUserAction } from '../redux/action';
+import styles from '../styles/Feedback.module.scss';
 
 class Feedback extends Component {
   render() {
@@ -12,38 +13,42 @@ class Feedback extends Component {
     return (
       <section>
         <Header />
-        <h2 data-testid="feedback-text">
-          {
-            assertions < assertionsComp ? 'Could be better...' : 'Well Done!'
-          }
-        </h2>
+        <div className={ styles.div_container }>
+          <h2 data-testid="feedback-text">
+            {
+              assertions < assertionsComp ? 'Could be better...' : 'Well Done!'
+            }
+          </h2>
 
-        <h3>
-          { 'Sua pontuação foi de: ' }
-          <span data-testid="feedback-total-score">{ score }</span>
-        </h3>
+          <h3>
+            { 'Sua pontuação foi de: ' }
+            <span data-testid="feedback-total-score">{ score }</span>
+          </h3>
 
-        <h3>
-          { 'Você acertou: ' }
-          <span data-testid="feedback-total-question">{ assertions }</span>
-        </h3>
+          <h4>
+            { 'Você acertou: ' }
+            <span data-testid="feedback-total-question">{ assertions }</span>
+          </h4>
 
-        <CreateButton
-          placeholder="Play Again"
-          testID="btn-play-again"
-          onClick={ () => {
-            history.push('/');
-            reset();
-          } }
-        />
-        <CreateButton
-          placeholder="Ranking"
-          testID="btn-ranking"
-          onClick={ () => {
-            history.push('/ranking');
-            reset();
-          } }
-        />
+          <CreateButton
+            className={ styles.button }
+            placeholder="Play Again"
+            testID="btn-play-again"
+            onClick={ () => {
+              history.push('/');
+              reset();
+            } }
+          />
+          <CreateButton
+            className={ styles.buttonRnk }
+            placeholder="Ranking"
+            testID="btn-ranking"
+            onClick={ () => {
+              history.push('/ranking');
+              reset();
+            } }
+          />
+        </div>
       </section>
     );
   }

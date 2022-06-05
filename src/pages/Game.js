@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { getQuestionsThunk, setScore, correctAction } from '../redux/action';
 import QuestionCard from '../components/QuestionCard';
-import '../css/Game.css';
+import '../styles/Game.css';
 
 class GameScreen extends Component {
   constructor() {
@@ -143,19 +143,20 @@ class GameScreen extends Component {
     return (
       <>
         <Header />
-        <div className="section-game-screen-container">
+        <div className="div-game-screen-container">
           <section className="section-game-screen">
-            <article className="game-data-container">
-              <p>
-                { !isLoading && (`Tempo restante: ${timer}`) }
+            <article className="game-container">
+              <p className="p-data-container">
+                { !isLoading && (`Tempo restante: ${timer} seg`) }
               </p>
-              { isLoading ? <p>Loading...</p> : (<QuestionCard
-                isButtonDisabled={ isButtonDisabled }
-                answerClickHandler={ this.answerClickHandler }
-                question={ questions[currentQuestion] }
-                correctColor={ correctColor }
-                incorrectColor={ incorrectColor }
-              />)}
+              { isLoading ? <p>Loading...</p> : (
+                <QuestionCard
+                  isButtonDisabled={ isButtonDisabled }
+                  answerClickHandler={ this.answerClickHandler }
+                  question={ questions[currentQuestion] }
+                  correctColor={ correctColor }
+                  incorrectColor={ incorrectColor }
+                />)}
               { isButtonNextVisible && (
                 <button
                   className="next-button"
