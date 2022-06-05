@@ -9,17 +9,22 @@
 
 .p-data-container {
   font-size: 1.5rem;
-  min-height: 3rem;
+  height: 3rem;
 }
 
 .next-button {
   border: 1px solid #ccc;
   border-radius: 5px;
   cursor: pointer;
-  height: 6vh;
+  height: 8vh;
   margin-top: 1.5rem;
   padding: 0 10px;
+  transition: 0.3s;
   width: 24vw;
+}
+
+.next-button:hover {
+  background-color: rgb(87, 219, 0);
 }
 
 .greenButton {

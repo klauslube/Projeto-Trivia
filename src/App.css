@@ -1,8 +1,10 @@
 body {
-  background-color: #f9f9f9;
+  background: linear-gradient(90deg, #7435d5 0%, #46178f 50%, #7435d5 100%);
   box-sizing: border-box;
+  color: white;
   font-family: Roboto , sans-serif;
   font-size: 16px;
+  height: 100%;
   margin: 0;
   padding: 0;
 }

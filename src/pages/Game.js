@@ -141,7 +141,7 @@ class GameScreen extends Component {
     const { isLoading, isButtonNextVisible, currentQuestion, isButtonDisabled,
       timer, correctColor, incorrectColor } = this.state;
     return (
-      <>
+      <div>
         <Header />
         <div className="div-game-screen-container">
           <section className="section-game-screen">
@@ -169,7 +169,7 @@ class GameScreen extends Component {
             </article>
           </section>
         </div>
-      </>
+      </div>
     );
   }
 }

@@ -15,7 +15,8 @@
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  background-color: #e4e4e4;
+  background-color: #fff;
+  color: rgb(33, 33, 33);
   border-radius: 5px;
 }
 
@@ -27,6 +28,7 @@
   flex-wrap: wrap;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
 }
 
@@ -40,7 +42,7 @@
 }
 
 .button {
-  border: 1px solid #ccc;
+  border: 1px solid #491994;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -50,10 +52,11 @@
   height: 10vh;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1rem;  
   transition: 0.3s;
+  background-color: #fff;
 
   &:hover {
-    background-color: #d4d4d4;
+    background-color: #c7afff;
   }
 }
