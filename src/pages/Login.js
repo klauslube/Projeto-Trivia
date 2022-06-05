@@ -82,11 +82,16 @@ class Login extends Component {
 
         </form>
         <Link to="/settings" data-testid="btn-settings">
-          <img
-            className={ styles.settings }
-            src={ settingSVG }
-            alt="engrenagem de settings"
-          />
+          <button
+            type="button"
+            className={ styles.settings_button }
+          >
+            <img
+              className={ styles.settings }
+              src={ settingSVG }
+              alt="engrenagem de settings"
+            />
+          </button>
         </Link>
       </div>
     );
