@@ -1,0 +1,30 @@
+.div_container {
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button, .buttonRnk {
+  width: 24vw;
+  height: 6vh;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0.5rem 0;
+  transition: 0.3s;
+
+  &:hover {
+    color: white;
+    background-color: #46178f;
+  }
+}
+
+.buttonRnk {
+  font-weight: bold;
+  color: #46178f;
+}

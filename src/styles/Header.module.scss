@@ -1,0 +1,22 @@
+.header_container {
+  font-size: 1.5rem;
+  min-height: 15vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ccc;
+  background-color: #491994;
+  padding: 0 5rem;
+}
+
+.div_player {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.img_player {
+  width: 8vh;
+  height: 8vh;
+  border-radius: 50%;
+}

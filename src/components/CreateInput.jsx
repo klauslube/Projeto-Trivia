@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 export default class CreateInput extends Component {
   render() {
-    const { type, placeholder, testID, name, handleInput, value } = this.props;
+    const { className, type, placeholder, testID, name, handleInput, value } = this.props;
     return (
       <input
+        className={ className }
         type={ type }
         placeholder={ placeholder }
         data-testid={ testID }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { pictureAction } from '../redux/action';
+import styles from '../styles/Header.module.scss';
 
 class Header extends Component {
   componentDidMount() {
@@ -20,27 +21,26 @@ class Header extends Component {
     const { player } = this.props;
 
     return (
-      <header>
+      <header className={ styles.header_container }>
         {/* <img src={ logo } alt="logo" /> */}
+        <div className={ styles.div_player }>
+          <img
+            className={ styles.img_player }
+            src={ this.imgGravatar(player.gravatarEmail) }
+            alt="Profile-Img"
+            data-testid="header-profile-picture"
+          />
+          <p
+            data-testid="header-player-name"
+          >
+            { player.name }
+          </p>
+        </div>
         <div>
-          <div>
-            <img
-              src={ this.imgGravatar(player.gravatarEmail) }
-              alt="Profile-Img"
-              data-testid="header-profile-picture"
-            />
-            <p
-              data-testid="header-player-name"
-            >
-              { player.name }
-            </p>
-          </div>
-          <div>
-            <span>Pontos: </span>
-            <span data-testid="header-score">
-              { player.score }
-            </span>
-          </div>
+          <span>Pontos: </span>
+          <span data-testid="header-score">
+            { player.score }
+          </span>
         </div>
       </header>
     );

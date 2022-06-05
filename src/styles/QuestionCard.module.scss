@@ -1,0 +1,62 @@
+.section_game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.div_container_text {
+  width: 50vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fff;
+  color: rgb(33, 33, 33);
+  border-radius: 5px;
+}
+
+.section_container_question_card {
+  margin-top: 1rem;
+  max-width: calc(50vw + 2rem);
+  width: 100%;
+  height: 100%;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.question_category {
+  font-size: 1.2rem;
+}
+
+.question_text {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.button {
+  border: 1px solid #491994;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 auto;
+  width: 24vw;
+  height: 10vh;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;  
+  transition: 0.3s;
+  background-color: #fff;
+
+  &:hover {
+    background-color: #c7afff;
+  }
+}

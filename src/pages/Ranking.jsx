@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CreateButton from '../components/CreateButton';
 import { readRanking } from '../services/localStore';
+import styles from '../styles/Ranking.module.scss';
 
 class Ranking extends Component {
   state ={
@@ -25,10 +26,10 @@ class Ranking extends Component {
   }
 
   renderRanking = (rank, index) => (
-    <ul key={ index }>
-      <li><img alt="avatar" src={ rank.picture } /></li>
+    <ul key={ index } className={ styles.ul_no_dots }>
+      <li><img alt="avatar" src={ rank.picture } className={ styles.img_player } /></li>
       <li data-testid={ `player-name-${index}` }>{rank.name}</li>
-      <li data-testid={ `player-score-${index}` }>{rank.score}</li>
+      <li data-testid={ `player-score-${index}` }>{`${rank.score} pontos`}</li>
     </ul>
   )
 
@@ -36,10 +37,17 @@ class Ranking extends Component {
     const { history } = this.props;
     const { ranking } = this.state;
     return (
-      <section>
-        <h1 data-testid="ranking-title">Ranking</h1>
+      <section className={ styles.section_container }>
+        <h1
+          data-testid="ranking-title"
+          className={ styles.title }
+        >
+          Ranking
+        </h1>
+        <hr className={ styles.hr } />
         {ranking.map(this.renderRanking)}
         <CreateButton
+          className={ styles.button }
           placeholder="Home page"
           testID="btn-go-home"
           onClick={ () => history.push('/') }
