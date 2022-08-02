@@ -3,7 +3,7 @@
 </h1>
 
 <h3 align="center">
-    Trivia é um jogo de perguntas e respostas, você ganha pontos ao acertar as perguntas de acordo com o tempo de resposta, para acessar essa aplicação, clique aqui: <a href='project-trivia-quiz.netlify.app'>link.</a>
+    Trivia é um jogo de perguntas e respostas, você ganha pontos ao acertar as perguntas de acordo com o tempo de resposta, para acessar essa aplicação, clique aqui: <a href='https://projeto-trivia-seven.vercel.app/'>link.</a>
 </h3>
 
 ## 💻 Sobre o projeto
