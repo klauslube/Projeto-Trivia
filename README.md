@@ -29,3 +29,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **Firebase**
 -   **Sass**
 -   **React Testing Library**
+
+## Desafios a melhorar
+
+- Criar tela de configurações 
+- Refatorar partes do codigo para melhor performance
