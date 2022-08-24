@@ -30,6 +30,26 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **Sass**
 -   **React Testing Library**
 
+## Instruções de instalação e uso
+### Instalando dependencias
+```
+cd projeto-trivia
+npm install
+```
+### Rodando aplicação
+```
+cd projeto-trivia
+npm start
+```
+### Run tests
+```
+npm test
+```
+### Run lint
+```
+npm run lint
+```
+
 ## Desafios a melhorar
 
 - Criar tela de configurações 
